@@ -1,0 +1,29 @@
+--- a/mk_distinfo.py	2024-02-21 19:30:33.053463902 +0700
++++ b/mk_distinfo.py	2024-02-21 19:30:17.489461769 +0700
+@@ -109,15 +109,19 @@
+         else:
+             fn_name = fn[len(prefix_dir):]
+ 
+-        fn_f = open(fn, 'rb')
+-        data = fn_f.read()
+-        fn_f.close()
++        try:
++            print("Trying to open: {}".format(fn_name))
++            fn_f = open(fn, 'rb')
++            data = fn_f.read()
++            fn_f.close()
+ 
+-        digest = base64.urlsafe_b64encode(
+-                hashlib.sha256(data).digest()).rstrip(b'=').decode('ascii')
++            digest = base64.urlsafe_b64encode(
++                    hashlib.sha256(data).digest()).rstrip(b'=').decode('ascii')
+ 
+-        record_f.write(
+-                '{0},sha256={1},{2}\n'.format(fn_name, digest, len(data)))
++            record_f.write(
++                    '{0},sha256={1},{2}\n'.format(fn_name, digest, len(data)))
++        except:
++            print("Some error happen!!")
+ 
+ record_f.write('{0}/RECORD,,\n'.format(distinfo_base))
+ 
